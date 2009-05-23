@@ -1,0 +1,7 @@
+= fourgl-db
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 Erik Kastner. See LICENSE for details.
