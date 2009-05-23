@@ -1,6 +1,11 @@
 = fourgl-db
 
-Description goes here.
+Read 4GL Databases from AppGen(tm).
+This is a reverse-engineered database parser.
+
+== Usage
+
+Coming soon!
 
 == Copyright
 

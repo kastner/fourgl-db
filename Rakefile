@@ -5,12 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "fourgl-db"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{Read your 4GL databases with ease. Works with the AppGen(tm) Database.}
     gem.email = "kastner@gmail.com"
     gem.homepage = "http://github.com/kastner/fourgl-db"
     gem.authors = ["Erik Kastner"]
     gem.rubyforge_project = "fourgl-db"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency("hasher")
   end
 
   Jeweler::RubyforgeTasks.new
