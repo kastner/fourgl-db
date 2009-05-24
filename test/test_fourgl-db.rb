@@ -81,4 +81,14 @@ class FourglDbTest < Test::Unit::TestCase
       @record.record[1].should == "XXXX XXXXXXX TEST COMPANY"
     end
   end
+
+  context "An open DB" do
+    setup do
+      @f = FourGLDB.open(fixture_file("company"))
+    end
+    
+    should "be able to perform a look up (and return the record)" do
+      @f.record_for_key("0").record[0].should == "0"
+    end
+  end
 end

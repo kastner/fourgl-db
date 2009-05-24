@@ -1,3 +1,4 @@
+require 'hasher'
 class FourGLDB
   class Record
     attr_reader :username, :record, :block_size
@@ -51,10 +52,12 @@ class FourGLDB
   end
   
   def hash_table
-    @f.seek header[:hash_start], IO::SEEK_SET
-    length = @f.read(8).unpack("Q")[0]
-    @f.seek(-8, IO::SEEK_CUR)
-    Record.new(@f.read(length + 56), header[:hash_table_size])
+    @hash_table ||= begin
+      @f.seek header[:hash_start], IO::SEEK_SET
+      length = @f.read(8).unpack("Q")[0]
+      @f.seek(-8, IO::SEEK_CUR)
+      Record.new(@f.read(length + 56), header[:hash_table_size])
+    end
   end
   
   def record_at(offset)
@@ -62,5 +65,13 @@ class FourGLDB
     length = @f.read(8).unpack("Q")[0]
     @f.seek(-8, IO::SEEK_CUR)
     Record.new(@f.read(length + 56))
+  end
+  
+  def record_for_key(key)
+    record_at(hash_table.record[hasher.hash(key)])
+  end
+  
+  def hasher
+    @hasher ||= Hasher.new(header[:hash_table_size])
   end
 end
