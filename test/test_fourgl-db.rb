@@ -90,5 +90,9 @@ class FourglDbTest < Test::Unit::TestCase
     should "be able to perform a look up (and return the record)" do
       @f.record_for_key("0").record[0].should == "0"
     end
+    
+    should "be iterable (on records)" do
+      @f.map {|r| r.record[0]}.should == ["0", "9999"]
+    end    
   end
 end

@@ -1,9 +1,12 @@
 require 'hasher'
 class FourGLDB
+  include Enumerable
+  
   class Record
-    attr_reader :username, :record, :block_size
+    attr_reader :username, :record, :block_size, :size
     
     def initialize(data, records = nil)
+      @size = data.length
       @block_size, 
       bytes_used, 
       next_record, 
@@ -65,6 +68,8 @@ class FourGLDB
     length = @f.read(8).unpack("Q")[0]
     @f.seek(-8, IO::SEEK_CUR)
     Record.new(@f.read(length + 56))
+  rescue NoMethodError
+    nil
   end
   
   def record_for_key(key)
@@ -73,5 +78,13 @@ class FourGLDB
   
   def hasher
     @hasher ||= Hasher.new(header[:hash_table_size])
+  end
+
+  def each
+    @pointer = hash_table.size + hash_start
+    while record_at(@pointer)
+      yield record_at(@pointer)
+      @pointer += record_at(@pointer).size
+    end
   end
 end
